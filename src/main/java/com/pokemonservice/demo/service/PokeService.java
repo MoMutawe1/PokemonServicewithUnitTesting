@@ -2,77 +2,62 @@ package com.pokemonservice.demo.service;
 
 import com.pokemonservice.demo.controller.AddResponse;
 import com.pokemonservice.demo.model.Pokemon;
+import com.pokemonservice.demo.repositories.PokemonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Component
+@Service
 public class PokeService {
+
+    @Autowired
+    PokemonRepository repo;
+
     static HashMap<Integer, Pokemon> pokemonCategories;
 
-    public PokeService() {
-        pokemonCategories = new HashMap<Integer, Pokemon>();
-        Pokemon electric = new Pokemon(1, 800, 400, "electric", 1);
-        Pokemon water = new Pokemon(2, 400, 400, "water", 5 );
-        Pokemon fire = new Pokemon(3, 1000, 300, "fire", 2 );
-        Pokemon earth = new Pokemon(4, 500, 800, "earth", 3);
-        Pokemon air = new Pokemon(5, 500, 500, "air", 4);
-        Pokemon notFound = new Pokemon(-1, -1, -1, "Type Not Found", -1);
-
-        pokemonCategories.put(1, electric);
-        pokemonCategories.put(2, water);
-        pokemonCategories.put(3, fire);
-        pokemonCategories.put(4, earth);
-        pokemonCategories.put(5, air);
+    public List<Pokemon> getAllPokes(){
+        return repo.findAll();
     }
 
-    public List getAllPokes(){
-        List pokeList = new ArrayList(pokemonCategories.values());
-        return pokeList;
-    }
-
-    public Pokemon getPokeById(int pokeId){
-        Pokemon pokemon = pokemonCategories.get(pokeId);
-        return pokemon;
+    public Pokemon getPokeById(int id){
+        return repo.findById(id).get();
     }
 
     public Pokemon getPokeByType(String pokeType){
+        List<Pokemon> allPoke = repo.findAll();
         Pokemon pokemon = null;
-
-            for (int i : pokemonCategories.keySet()) {
-                if (pokemonCategories.get(i).getType().equals(pokeType))
-                    pokemon = pokemonCategories.get(i);
-            }
+        for(Pokemon poke: allPoke){
+            if(poke.getType().equalsIgnoreCase(pokeType))
+                pokemon = poke;
+        }
         return pokemon;
     }
 
     public Pokemon updatePokemon(Pokemon pokemon){
-        if(pokemon.getPokemonId()>0)
-            pokemonCategories.put(pokemon.getPokemonId(), pokemon);
+        repo.save(pokemon);
         return pokemon;
     }
 
     public Pokemon addNewPokemon(Pokemon pokemon){
         pokemon.setPokemonId(getMaxId());
-        pokemonCategories.put(pokemon.getPokemonId(), pokemon);
+        repo.save(pokemon);
         return pokemon;
     }
 
-    public static int getMaxId(){
-        int max=0;
-        for(int id: pokemonCategories.keySet())
-            if(max<id)
-                max=id;
-        return max+1;
+    public int getMaxId(){
+        return repo.findAll().size()+1;
     }
 
     public AddResponse deletePokemon(int id){
-        pokemonCategories.remove(id);
+        repo.deleteById(id);
         AddResponse response = new AddResponse();
+        response.setMsg("Record Deleted..");
         response.setId(id);
-        response.setMsg("record deleted.");
         return response;
     }
 }

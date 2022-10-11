@@ -1,61 +1,82 @@
 package com.pokemonservice.demo.model;
 
+import com.sun.istack.NotNull;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Pokemon", schema = "Pokemon")
 public class Pokemon {
-    private int pokemonId;
-    private int attack;
-    private int strength;
-    private String type;
-    private int position;
+
+    @Id
+    @Column(name = "pokemon_id")
+    private int pokemon_id;
+
+    @Column(name = "pokemon_attack")
+    private int pokemon_attack;
+
+    @Column(name = "pokemon_strength")
+    private int pokemon_strength;
+
+    @Column(name = "pokemon_type")
+    private String pokemon_type;
+
+    @Column(name = "pokemon_position")
+    private int pokemon_position;
 
     public Pokemon(){}
-    public Pokemon(int pokemonId, int attack, int strength, String type, int position) {
-        this.pokemonId = pokemonId;
-        this.attack = attack;
-        this.strength = strength;
-        this.type = type;
-        this.position = position;
+    public Pokemon(int pokemonId, int pokemon_attack, int strength, String type, int position) {
+        this.pokemon_id = pokemonId;
+        this.pokemon_attack = pokemon_attack;
+        this.pokemon_strength = strength;
+        this.pokemon_type = type;
+        this.pokemon_position = position;
     }
 
     public int getPokemonId() {
-        return pokemonId;
+        return pokemon_id;
     }
 
     public void setPokemonId(int pokemonId) {
-        this.pokemonId = pokemonId;
+        this.pokemon_id = pokemonId;
     }
 
     public int getAttack() {
-        return attack;
+        return pokemon_attack;
     }
 
     public void setAttack(int attack) {
-        this.attack = attack;
+        this.pokemon_attack = attack;
     }
 
     public int getStrength() {
-        return strength;
+        return pokemon_strength;
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        this.pokemon_strength = strength;
     }
 
     public String getType() {
-        return type;
+        return pokemon_type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.pokemon_type = type;
     }
 
     public int getPosition() {
-        return position;
+        return pokemon_position;
     }
 
     public void setPosition(int position) {
-        this.position = position;
+        this.pokemon_position = position;
     }
 
     @Override
@@ -63,22 +84,22 @@ public class Pokemon {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pokemon pokemon = (Pokemon) o;
-        return pokemonId == pokemon.pokemonId && attack == pokemon.attack && strength == pokemon.strength && type.equals(pokemon.type) && position == pokemon.position;
+        return pokemon_id == pokemon.pokemon_id && pokemon_attack == pokemon.pokemon_attack && pokemon_strength == pokemon.pokemon_strength && pokemon_type.equals(pokemon.pokemon_type) && pokemon_position == pokemon.pokemon_position;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pokemonId, attack, strength, type, position);
+        return Objects.hash(pokemon_id, pokemon_attack, pokemon_strength, pokemon_type, pokemon_position);
     }
 
     @Override
     public String toString() {
         return "Pokemon{" +
-                "pokemonId=" + pokemonId +
-                ", attack=" + attack +
-                ", strength=" + strength +
-                ", type='" + type + '\'' +
-                ", position='" + position + '\'' +
+                "pokemonId=" + pokemon_id +
+                ", attack=" + pokemon_attack +
+                ", strength=" + pokemon_strength +
+                ", type='" + pokemon_type + '\'' +
+                ", position='" + pokemon_position + '\'' +
                 '}';
     }
 }
