@@ -1,4 +1,4 @@
-package com.pokemonservice.demo.service;
+package com.pokemonservice.demo;
 
 import com.pokemonservice.demo.controller.AddResponse;
 import com.pokemonservice.demo.model.Pokemon;
@@ -59,5 +59,9 @@ public class PokeService {
         response.setMsg("Record Deleted..");
         response.setId(id);
         return response;
+    }
+
+    public void deletePokemon(Pokemon pokemon){
+        repo.delete(pokemon);
     }
 }

@@ -1,7 +1,7 @@
 package com.pokemonservice.demo.controller;
 
 import com.pokemonservice.demo.model.Pokemon;
-import com.pokemonservice.demo.service.PokeService;
+import com.pokemonservice.demo.PokeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
