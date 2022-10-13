@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "pokemon_tbl", schema = "Pokemon")
+@Table(name = "pokemon_tbl") //, schema = "Pokemon")
 public class Pokemon {
 
     @Id
