@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class TrainersController {
@@ -16,8 +17,13 @@ public class TrainersController {
     PokeService pokeService;
 
     @GetMapping("/getallpokemons")
-    public List getPoke(){
-        return pokeService.getAllPokes();
+    public ResponseEntity<List<Pokemon>> getAllPokemons(){
+        try{
+            List<Pokemon> pokemonsList = pokeService.getAllPokes();
+            return new ResponseEntity<>(pokemonsList, HttpStatus.FOUND);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/getpokemon/{id}")
@@ -43,8 +49,13 @@ public class TrainersController {
     }
 
     @PostMapping("/addPokemon")
-    public Pokemon addPokemon(@RequestBody Pokemon newPokemon){
-        return pokeService.addNewPokemon(newPokemon);
+    public ResponseEntity<Pokemon> addPokemon(@RequestBody Pokemon newPokemon){
+         try {
+             Pokemon pokemon = pokeService.addNewPokemon(newPokemon);
+             return new ResponseEntity<Pokemon>(pokemon,HttpStatus.CREATED);
+         } catch (NoSuchElementException e){
+             return new ResponseEntity<>(HttpStatus.CONFLICT);
+         }
     }
 
     @PutMapping("/updatepokemon/{id}")
@@ -58,14 +69,14 @@ public class TrainersController {
             existPokemon.setPosition(pokemon.getPosition());
 
             Pokemon updatedPokemon = pokeService.updatePokemon(existPokemon);
-            return new ResponseEntity<Pokemon>(updatedPokemon, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Pokemon>(updatedPokemon, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @DeleteMapping("/deletepokemon/{id}")
-    public ResponseEntity<AddResponse> deletePokemone(@PathVariable (value = "id") int id){
+    public ResponseEntity<AddResponse> deletePokemon(@PathVariable (value = "id") int id){
         try {
             AddResponse pokemon = pokeService.deletePokemon(id);
             return new ResponseEntity<AddResponse>(pokemon, HttpStatus.OK);
